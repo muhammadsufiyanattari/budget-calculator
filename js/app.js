@@ -24,9 +24,22 @@ const expenseRowHTML=(title, amount)=>{
 }
 //  calculate buget function
 const bugetCalulate=()=>{
-expenseListMainDiv.forEach(element => {
-  element.c
-});
+let bugetValue=document.querySelector("#budget-amount");
+let expenseValue=document.querySelector("#expense-amount");
+let balanceValue=document.querySelector("#balance-amount")
+console.log(bugetValue.textContent);
+console.log(expenseValue.textContent);
+console.log(balanceValue.textContent);
+balanceValue.textContent=parseInt(bugetValue.textContent)-parseInt(expenseValue.textContent)
+// if (balanceValue.textContent<0) {
+//   alert("Out of budget")
+//   balanceValue.textContent=0
+// }
+if(expenseValue.textContent==0){
+  balanceValue.textContent=0
+  return
+}
+
 
 }
 
@@ -41,6 +54,7 @@ bugetform.addEventListener("submit", function (e) {
     return;
   }
   bugetAmount.textContent= parseInt(bugetAmount.textContent)+parseInt( getValue.value);
+  bugetCalulate()
 if (bugetAmount.textContent == 0) {
   alert("Please Add Currect Amount")
 }
@@ -52,8 +66,9 @@ expenseform.addEventListener("submit", function (e) {
   let expenseName = e.target.children[1].children[0];
   let getExpanseAmount = e.target.children[3].children[0];
   let expensesShow=document.querySelector("#expense-amount")
-  console.log(expenseName.value);
-  console.log( getExpanseAmount.value);
+  let bugetValue=document.querySelector("#budget-amount");
+  // console.log(expenseName.value);
+  // console.log( getExpanseAmount.value);
     let bugetAmount = document.querySelector("#budget-amount");
     console.log(bugetAmount.textContent);
     
@@ -67,8 +82,18 @@ expenseform.addEventListener("submit", function (e) {
     alert("Please fill in both fields");
     return;
   }
+  if (expensesShow.textContent==bugetAmount.textContent) {
+     alert("Your Buget is Out Please enter a budget amount first");
+      expensesShow.textContent=0
+      bugetValue.textContent=0
+        expenseName.value = "";
+  getExpanseAmount.value = "";
+  return
+  }
   expensesShow.textContent=parseInt(expensesShow.textContent)+parseInt(getExpanseAmount.value)
 expenseRowHTML(expenseName.value, getExpanseAmount.value);
+  bugetCalulate()
+
   expenseName.value = "";
   getExpanseAmount.value = "";
 });
